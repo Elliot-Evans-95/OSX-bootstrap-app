@@ -7,52 +7,36 @@
 
 import SwiftUI
 
+enum Tabs: Hashable {
+    case welcome
+    case installHomebrew
+}
+
+struct SecondContentView: View {
+    var body: some View {
+        Text("Hello, World!")
+    }
+}
+
 struct ContentView: View {
-    @State private var showFolders : Bool = false
-    @State private var folderList : String = ""
 
     var body: some View {
-
-        VStack(spacing: 10) {
-            Text("G'day m'lady")
-                    .font(.title)
-                    .padding()
-
-            Text("OSX Bootstrap!")
-                    .font(.subheadline)
-                    .padding()
-
-            Spacer()
+        ZStack(alignment: .bottom) {
+            TabbedView()
+            NavigationButtonsView()
         }
 
-        Button(action: {
-            print(shell("ls -la"))
-
-            folderList = shell("ls -la")
-            showFolders = !showFolders
-        }) {
-            HStack {
-                Image(systemName: "folder.fill")
-                Text("View folders")
-            }.padding(.top, 0)
+        NavigationView {
+            NavigationLink(destination: SecondContentView()) {
+                Text("Press on me")
+            }.buttonStyle(PlainButtonStyle())
         }
-
-        ScrollView(.vertical, showsIndicators: false) {
-            DisclosureGroup("", isExpanded: $showFolders) {
-                Text(folderList)
-            }.padding()
-
-            Spacer()
-        }
-
     }
+
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-//        ContentView().previewLayout(
-//                .device
-//        )
         ContentView()
     }
 }
